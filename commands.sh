@@ -13,3 +13,6 @@ git branch [branch_name]
 
 # перейти на гілку
 git checkout [branch_name]
+
+# завантаження змін з github
+git pull origin [branch_name]
