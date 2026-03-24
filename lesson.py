@@ -36,6 +36,10 @@ def func(num1, num2):
     return 1 + 2
 
 
+def func2(text):
+    print(text)
+
+
 print(random)
 print(func(1, 2))
 
