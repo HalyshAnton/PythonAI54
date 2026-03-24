@@ -29,3 +29,12 @@
 # перейти в папку
 # cd folder
 # cd ..  # повернутись в попередню папку
+import math
+
+
+def func(num1, num2):
+    return 1 + 2
+
+
+print(math.pi)
+print(func(1, 2))
