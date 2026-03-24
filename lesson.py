@@ -36,7 +36,7 @@ def func(num1, num2):
     return 1 + 2
 
 
-def new_func(text):
+def func2(text):
     print(text)
 
 
