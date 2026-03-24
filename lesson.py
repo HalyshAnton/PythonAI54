@@ -29,14 +29,14 @@
 # перейти в папку
 # cd folder
 # cd ..  # повернутись в попередню папку
-import math
+import random
 
 
 def func(num1, num2):
     return 1 + 2
 
 
-print(math.pi)
+print(random)
 print(func(1, 2))
 
 
