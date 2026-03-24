@@ -4,9 +4,6 @@ version = "0.1.0"
 description = "ITStep course for students"
 requires-python = ">=3.10"
 
-[tool.black]
-line-length = 88
-target-version = ["py311"]
 
 [tool.ruff]
 line-length = 88
