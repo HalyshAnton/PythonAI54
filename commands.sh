@@ -4,6 +4,7 @@ pre-commit install
 
 # запуск
 pre-commit run --all-files
+pre-commit run --files [file_path]
 
 # подивитися на всі гілки
 git branch
