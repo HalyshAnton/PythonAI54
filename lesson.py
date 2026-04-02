@@ -1,232 +1,125 @@
-# ## **Клас: КурсПрограмування**
+# Принципи ООП
+
+# інкапсуляція
+# поліморфізм
+# наслідування
+
+
+# # інкапсуляція
+# nums = [1, 2, 3, 4]
 #
-# ### **Створіть клас `КурсПрограмування` з атрибутами:**
-#
-# *   **назва курсу**
-# *   **викладач**
-# *   **статус курсу** (*"неактивний"* / *"в процесі"* / *"завершений"*)
-# *   **мінімальна кількість студентів**
-# *   **максимальна кількість студентів**
-# *   **список студентів** (список рядків)
-# *   **список модулів** (список словників: `{ "назва": години, "пройдено": False }`)
-# *   **поточний модуль** (індекс або None)
-# *   **загальний прогрес курсу (в %)**
-# *   **дата старту (за замовчуванням None)**
-# *   **дата завершення (за замовчуванням None)**
-#
-# ***
-
-# стилі назв в python:
-# snake_case -- (малі літери, між словами _)
-# *  змінні
-# *  функції
-# *  модулі/бібліотеки/файли
-#
-# CamelCase  -- (перша літера слова велика, немає нічого між словами)
-# * класи
-from datetime import datetime
-from typing import Any
+# nums.append(2)
+# nums.remove(5)
+# nums[0]  # тут теж метод index(0)
 
 
-class ProgrammingCourse:
-    # *   **назва курсу**
-    # *   **викладач**
-    # *   **статус курсу** (*"неактивний"* / *"в процесі"* / *"завершений"*)
-    # *   **мінімальна кількість студентів**
-    # *   **максимальна кількість студентів**
-    # *   **список студентів** (список рядків)
-    # *   **список модулів** (список словників:`{ назва години, пройдено}`)
-    # *   **поточний модуль** (індекс або None)
-    # *   **загальний прогрес курсу (в %)**
-    # *   **дата старту (за замовчуванням None)**
-    # *   **дата завершення (за замовчуванням None)**
-    def __init__(
-        self,
-        name: str,
-        teacher: str,
-        min_students: int = 5,
-        max_students: int = 20,
-    ):
-        self.name = name
-        self.teacher = teacher
-        self.min_students = min_students
-        self.max_students = max_students
+def show():
+    greet_user()
+    print("hello world")
 
-        self.status = "неактивний"  # (*"неактивний"* / *"в процесі"* / *"завершений"*)
-        self.students: list[str] = []
-        self.modules: list[
-            dict[str, Any]
-        ] = []  # список словників де ключ str, значення будь-яке
-        self.current_model_idx: int | None = None
-        self.progress: float = 0
-        self.start_date: datetime | None = None
-        self.end_date: datetime | None = None
 
-        self.total_hour: int = 0
+def greet_user():
+    print("hello user")
 
-    def start(self):
-        # перевірки
-        if len(self.students) < self.min_students:
-            print("Замало студентів")
-            return
 
-        if len(self.students) > self.max_students:
-            print("Забагато студентів")
-            return
+class Person:
+    def __init__(self, name, age):
+        self._check_str(name)
+        self._check_num(age)
 
-        if not self.modules:  # якщо порожній
-            print("Немає модулів")
-            return
+        self._name = name  # приховування атрибутів
+        self._age = age
 
-        if self.status != "неактивний":
-            print("Курс уже почався")
-            return
+    def _check_str(self, text):  # прихований метод
+        if text == "":
+            raise ValueError("Рядок не може бути порожнім")
 
-        # починаємо курс
-        self.status = "в процесі"
-        self.current_model_idx = 0
-        self.start_date = datetime.now()
+    def _check_num(self, num):
+        if num <= 0:
+            raise ValueError("Число не може бути ві'ємним")
 
     def show_info(self):
-        print(f"Назва курсу: {self.name}")
-        print(f"Викладач: {self.teacher}")
-        print(f"Статус: {self.status}")
+        print(self._name)
+        print(self._age)
 
-        print(f"\nКількість студентів: {len(self.students)}")
-        print(f"Мінімум / Максимум: {self.min_students} / {self.max_students}")
-
-        print("\nСтуденти:")
-        if self.students:
-            for student in self.students:
-                print(f" - {student}")
-        else:
-            print(" (немає студентів)")
-
-        print(f"Загальна тривалість: {self.total_hour} год")
-        print(f"\nКількість модулів: {len(self.modules)}")
-
-        print(f"\nПрогрес: {self.progress * 100:.1f}%")
-
-        print("\nПоточний модуль: ", end="")
-        if self.current_model_idx is not None and 0 <= self.current_model_idx < len(
-            self.modules
-        ):
-            module = self.modules[self.current_model_idx]
-            print(module["name"])
-        else:
-            print("не встановлено")
-
-        print("\nДати:")
-        print(f" Початок: {self.start_date if self.start_date else 'не встановлено'}")
-        print(f" Завершення: {self.end_date if self.end_date else 'не встановлено'}")
-
-    def add_student(self, student_name: str):
-        self.students.append(student_name)
-
-    def add_module(self, name: str, duration: int):
-        module = {"name": name, "duration": duration, "is_finished": False}
-        self.modules.append(module)
-        self.total_hour += duration
-
-    def finish(self):
-        # перевірки
-
-        if self.progress < 1.0:
-            print("Ви ще не пройшли всі модулі")
-            return
-
-        # закінчуємо курс
-        self.status = "завершений"
-        self.end_date = datetime.now()
-
-    def switch_module(self):
-        # change progress
-
-        # модуль який закінчили
-        module = self.modules[self.current_model_idx]
-        self.progress += module["duration"] / self.total_hour
-
-        self.current_model_idx += 1
+    def get_grade(self, grade):
+        self._check_num(grade)
+        print(f"Ви отримали оцінку {grade}")
 
 
-course = ProgrammingCourse(
-    name="PythonAI55",
-    teacher="Anton Halysh",
-    min_students=3,
-)
+# person = Person("John", 25)
+# person.show_info()
+#
+# # до прихованих методів/атрибутів можна отримати доступ
+# # але бажано так не робити
+# person._check_str("")
 
 
-course.add_student("John")
-course.add_student("Ann")
-course.add_student("Mary")
-course.add_student("Mike")
-
-course.add_module("Python", 150)
-course.add_module("AI", 75)
-
-course.start()
-course.show_info()
-
-course.switch_module()
-course.switch_module()
-
-course.finish()
-
-course.show_info()
+# поліморфізм
 
 #
+# words = [1, 2, 3, 4]
+# fruits = {"apple", "banana", "cherry"}
+# rate_currency = {"UAH": 1, "USD": 44, "ZLT": 11}
 #
-# ***
-#
-# ## ### **1. запуск курсу**
-#
-#
-# ***
-#
-# ## ### **2. завершення курсу**
-# ***
-#
-# ## ### **3. додати модуль**
-#
-# Передається:
-#
-# *   назва
-# *   години
-#
-# ***
-#
-# ## ### **4. видалити модуль**
-#
-# ***
-#
-# ## ### **5. додати студента**
-#
-# ***
-#
-# ## ### **6. видалити студента**
-#
-# ***
-#
-# ## ### **7. перейти до наступного модуля**
-#
-# ***
-#
-# ## ### **8. отримати прогрес курсу**
-#
-# ***
-#
-# ## ### **9. змінити викладача**
-#
-# ***
-#
-# ## ### **10. вивести детальну інформацію про курс**
-#
-# ***
-#
-# ## ### **13. підрахувати загальні години модулів**
+# words.append()
+# fruits.union()
+# rate_currency.items()
 #
 #
-# ***
+# words.clear()
+# fruits.clear()
+# rate_currency.clear()
+
+# поліморфізм
 #
-# ## ### **14. знайти модуль за назвою**
-#
+# в різних класах є методи з однаковою назвою які
+# реалізовують однакову логіку
+
+
+class Cat:
+    def __init__(self, name, age):
+        self._name = name
+        self._age = age
+
+    def make_sound(self):
+        print("Мяу")
+
+    def grow(self):
+        self._age += 1
+
+
+class Dog:
+    def __init__(self, name, age, energy):
+        self._name = name
+        self._age = age
+        self._energy = energy
+
+    def make_sound(self):
+        print("Гав")
+
+    def grow(self):
+        self._age += 1
+        self._energy -= 1
+
+    def play(self):
+        if self._energy < 10:
+            print("Песик втомлений")
+
+
+class Hamster:
+    def __init__(self, name, age):
+        self._name = name
+        self._age = age
+
+    def make_sound(self):
+        print("Пі-пі-пі")
+
+    def grow(self):
+        self._age += 1
+
+
+pet = Hamster(name="Jordon", age=3)
+
+pet.make_sound()
+pet.grow()
