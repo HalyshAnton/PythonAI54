@@ -166,7 +166,9 @@ class Designer(Employee):
         tool: str,
         style: str,
         status: Status = Status.offline,
-        works_done: int = 0
+        works_done: int = 0,
+        favourite_color: str = "red",
+        password: str = ""
     ):
         super().__init__(name, salary, status)
 
