@@ -169,6 +169,8 @@ class Designer(Employee):
         works_done: int = 0,
         favourite_color: str = "red",
         password: str = "",
+        login: str = "",
+        api_key: str = "",
     ):
         super().__init__(name, salary, status)
 
