@@ -167,10 +167,6 @@ class Designer(Employee):
         style: str,
         status: Status = Status.offline,
         works_done: int = 0,
-        favourite_color: str = "red",
-        password: str = "",
-        login: str = "",
-        api_key: str = "",
     ):
         super().__init__(name, salary, status)
 
@@ -178,14 +174,26 @@ class Designer(Employee):
         self._style = style
         self._works_done = works_done
 
+    #
+    # Методи:
+    #
+    # * `info()` – додатково виводить інформацію
+    def info(self):
+        super().info()
+        print(f"Tool: {self._tool}, style: {self._style}")
+        print(f"#Works done: {self._works_done}")
 
-#
-# Методи:
-#
-# * `info()` – додатково виводить інформацію
-# * `create_design()` – збільшує кількість робіт
-# * `change_style(new_style)` – змінює стиль
-# * `change_tool(new_tool)` – змінює програму для роботи
+    # * `create_design()` – збільшує кількість робіт
+    def create_design(self):
+        self._works_done += 1
+
+    # * `change_style(new_style)` – змінює стиль
+    def change_style(self, new_style: str):
+        self._style = new_style
+
+    # * `change_tool(new_tool)` – змінює програму для роботи
+    def change_tool(self, new_tool: str):
+        self._tool = new_tool
 
 
 # class Employee(ABC):
