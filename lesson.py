@@ -1,160 +1,200 @@
-# наслідування(спадковість)
+#  ## Завдання 1
+#
+# Створіть абстрактний клас **Employee** з атрибутами:
+#
+# * `name` – ім’я працівника
+# * `salary` – зарплата
+# * `status` – стан (`working`, `vacation`, `offline`)
+#
+# Методи:
+#
+# * `info()` – виводить інформацію
+# * `start_work()` – змінює стан на `working`
+# * `take_vacation()` – змінює стан на `vacation`
+# * `increase_salary(amount)` – збільшує зарплату
+#
+
+from abc import ABC
+from enum import Enum
 
 
-class Parent:
-    def __init__(self, name, age):
-        print("parent hello from __init__")
-
-        self._name = name
-        self._age = age
-
-    def display_info(self):
-        print("parent hello from display_info ")
-        print(f"Parent {self._name}, {self._age} yr")
-
-    def grow(self):
-        self._age += 1
+# `status` – стан (`working`, `vacation`, `offline`)
+class Status(Enum):
+    working = "working"
+    vacation = "vacation"
+    offline = "offline"
 
 
-class Child(Parent):  # Child успадковує методи класу Parent
-    def __init__(self, name, age, grade):
-        # в дочірній клас(Child) часто з'являються додаткові атрибути
-        # добавляємо через super().__init__
-        super().__init__(name, age)
-
-        # ваша додаткова логіка
-        print("child hello from __init__")
-        self._grade = grade
-
-    # перевантажити(замінити на свій) батьківський метод
-    def display_info(self):
-        # якщо потрбно виклаеати батьківський варіант методу
-
-        # print("перед super")
-        # super().display_info()
-        # print("після super")
-
-        print("child hello from display_info ")
-        print(f"Child {self._name}, grade №{self._grade}")
-
-
-# parent = Parent("John", 48)
-# parent.display_info()
-# parent.grow()
-
-
-child = Child("Max", 12, 6)
-child.display_info()
-child.grow()
-# child.display_info()
-
-
-# круті програмісти часто пишуть власні помилки для відслідковування
-# проблкм в коді
-
-
-class WorkerNumParamError(Exception):
-    pass
-
-
-class WorkerTextParamError(Exception):
-    pass
-
-
-class Worker:
-    def __init__(self, name: str, salary: int, exp: float):
-        # перевірка значень
-        self._check_text(name)
-        self._check_num(salary)
-        self._check_num(exp)
-
+class Employee(ABC):
+    def __init__(
+        self,
+        name: str,
+        salary: int,
+        status: Status = Status.offline,
+    ):
         self._name = name
         self._salary = salary
-        self._exp = exp
+        self._status = status
 
-    # методи для перевірки даних(використовуються лише всередині класу
-    # тому їх варто приховати)
+    # * `info()` – виводить інформацію
+    def info(self):
+        print(f"Name: {self._name}, salary: {self._salary}")
+        print(f"Status: {self._status.value}")
 
-    # якщо в методі не потрібно використовувати self
-    # тоді цей метод називають статичним
-    # щоб вказати що метод є статичним використовують декоратор
+    # * `start_work()` – змінює стан на `working`
+    def start_work(self):
+        self._status = Status.working
 
-    @staticmethod
-    def _check_num(num):
-        if num < 0:
-            raise WorkerNumParamError("worker num param < 0")
+    # * `take_vacation()` – змінює стан на `vacation`
+    def take_vacation(self):
+        self._status = Status.vacation
 
-    @staticmethod
-    def _check_text(text):
-        if text == "":
-            raise WorkerTextParamError("worker name is empty")
-
+    # * `increase_salary(amount)` – збільшує зарплату
     def increase_salary(self, amount: int):
         self._salary += amount
 
-    def set_exp(self, new_exp: float):
-        """
-        Встановити новий досвід роботи
-        :param new_exp:
-        """
+    # @abstractmethod
+    # def method(self):
+    #     pass
 
-        self._check_num(new_exp)
-        self._exp = new_exp
-
-    def show_info(self):
-        print(f"Name {self._name}, {self._salary}$, exp:{self._exp}")
-
-    # в батьківських класах пишуть методи які будуть пізніше
-    # імплементовані в дочірніх класах для кращого розуміння структури
-    # цих класів
-    def do_work(self):
-        """
-        Виводить піводомлення що робить працівник
-        має бути імплементований в дочірніх класах
-        :return:
-        """
-        pass
-
-
-class Administrator(Worker):
-    def do_work(self):
-        print(f"{self._name} перевіряє роботу працівників")
-
-
-class Developer(Worker):
-    def do_work(self):
-        print(f"{self._name} пише код програми")
-
-
-class Intern(Worker):
-    def do_work(self):
-        print(f"{self._name} вчиться писати код програми")
-
-
-try:
-    developer = Developer("Mary", salary=1000, exp=5)
-    developer.increase_salary(200)
-    developer.set_exp(4.5)
-
-    developer.show_info()
-
-    developer.do_work()
-
-except WorkerTextParamError:
-    print("ім'я не може бути порожнім")
-except WorkerNumParamError:
-    print("від'ємне число")
 
 #
+# ## Завдання 2
 #
+# Створіть дочірній клас **Programmer**
 #
-# class GrandMa:
+# Додаткові атрибути:
+#
+# * `language` – основна мова програмування
+# * `projects` – список проєктів
+# * `bugs_fixed` – кількість виправлених помилок
+
+
+class Programer(Employee):
+    def __init__(
+        self,
+        name: str,
+        salary: int,
+        language: str,
+        status: Status = Status.offline,
+        projects: list[str] | None = None,
+        bugs_fixed: int = 0,
+    ):
+        # викликаємо init з Employee
+        super().__init__(name, salary, status)
+
+        # додаткові атрибути
+        self._language = language
+        self._bugs_fixed = bugs_fixed
+
+        # перевірка projects
+        if projects is None:
+            self._projects = []
+        else:
+            self._projects = projects
+
+    # * `info()` – додатково виводить інформацію
+    def info(self):
+        super().info()
+        print(f"Language: {self._language}, #fixed bugs: {self._bugs_fixed}")
+        print(f"Projects: {self._projects}")
+
+    # * `add_project(project)` – додає проєкт
+    def add_project(self, project: str):
+        self._projects.append(project)
+
+    # * `fix_bug(count)` – збільшує кількість виправлених помилок
+    def fix_bug(self, count: int):
+        self._bugs_fixed += count
+
+    # * `change_language(new_language)` – змінює мову програмування
+    def change_language(self, new_language: str):
+        self._language = new_language
+
+
+pr1 = Programer(
+    name="Jhon",
+    salary=1000,
+    language="Python",
+)
+
+pr2 = Programer(
+    name="Mary",
+    salary=1000,
+    language="Python",
+)
+
+pr3 = Programer(
+    name="Mike",
+    salary=1000,
+    language="Python",
+)
+pr1.change_language("Java")
+pr2.fix_bug(3)
+pr3.add_project("Text detection")
+pr3.start_work()
+
+# pr1.info()
+# pr2.info()
+# pr3.info()
+#
+# Методи:
+#
+# * `info()` – додатково виводить інформацію
+# * `add_project(project)` – додає проєкт
+# * `fix_bug(count)` – збільшує кількість виправлених помилок
+# * `change_language(new_language)` – змінює мову програмування
+#
+# ---
+#
+# ## Завдання 3
+#
+# Створіть дочірній клас **Designer**
+#
+# Додаткові атрибути:
+#
+# * `tool` – програма для дизайну
+# * `works_done` – кількість виконаних робіт
+# * `style` – стиль дизайну
+
+
+class Designer(Employee):
+    def __init__(
+        self,
+        name: str,
+        salary: int,
+        tool: str,
+        style: str,
+        status: Status = Status.offline,
+        works_done: int = 0
+    ):
+        super().__init__(name, salary, status)
+
+        self._tool = tool
+        self._style = style
+        self._works_done = works_done
+
+
+#
+# Методи:
+#
+# * `info()` – додатково виводить інформацію
+# * `create_design()` – збільшує кількість робіт
+# * `change_style(new_style)` – змінює стиль
+# * `change_tool(new_tool)` – змінює програму для роботи
+
+
+# class Employee(ABC):
 #     pass
 #
 #
-# class Parent(GrandMa):
+# class Designer(Employee):
 #     pass
 #
 #
-# class Child(Parent):
+# class Programer(Employee):
 #     pass
+#
+#
+# designer1 = Designer()
+# progra = Programer()
