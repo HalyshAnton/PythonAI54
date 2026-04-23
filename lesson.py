@@ -1,212 +1,103 @@
-#  ## Завдання 1
+# json
+import json
+
+# робота з файлами
+data = {
+    "name": "Антон",
+    "age": 24,
+}
+
+# # запис
+# with open("data.txt", "w", encoding="utf-8") as file:
+#     print(str(data), file=file)
 #
-# Створіть абстрактний клас **Employee** з атрибутами:
+# # читання
+# with open("data.txt", "r", encoding="utf-8") as file:
+#     new_data = file.read()
 #
-# * `name` – ім’я працівника
-# * `salary` – зарплата
-# * `status` – стан (`working`, `vacation`, `offline`)
+# print(type(new_data))
+# print(new_data)
+
+data = {
+    "name": "Антон",
+    "age": 24,
+    "items": ["bread", "apple", "milk", "butter"],
+    "is_good": True,
+    "salary": 500.25,
+    "data": None,
+}
+
+# # дозволені типи даних
+# # dict, int, float, bool, None, str, list
 #
-# Методи:
-#
-# * `info()` – виводить інформацію
-# * `start_work()` – змінює стан на `working`
-# * `take_vacation()` – змінює стан на `vacation`
-# * `increase_salary(amount)` – збільшує зарплату
-#
-
-from abc import ABC
-from enum import Enum
-
-
-# `status` – стан (`working`, `vacation`, `offline`)
-class Status(Enum):
-    working = "working"
-    vacation = "vacation"
-    offline = "offline"
-
-
-class Employee(ABC):
-    def __init__(
-        self,
-        name: str,
-        salary: int,
-        status: Status = Status.offline,
-    ):
-        self._name = name
-        self._salary = salary
-        self._status = status
-
-    # * `info()` – виводить інформацію
-    def info(self):
-        print(f"Name: {self._name}, salary: {self._salary}")
-        print(f"Status: {self._status.value}")
-
-    # * `start_work()` – змінює стан на `working`
-    def start_work(self):
-        self._status = Status.working
-
-    # * `take_vacation()` – змінює стан на `vacation`
-    def take_vacation(self):
-        self._status = Status.vacation
-
-    # * `increase_salary(amount)` – збільшує зарплату
-    def increase_salary(self, amount: int):
-        self._salary += amount
-
-    # @abstractmethod
-    # def method(self):
-    #     pass
-
-
-#
-# ## Завдання 2
-#
-# Створіть дочірній клас **Programmer**
-#
-# Додаткові атрибути:
-#
-# * `language` – основна мова програмування
-# * `projects` – список проєктів
-# * `bugs_fixed` – кількість виправлених помилок
-
-
-class Programer(Employee):
-    def __init__(
-        self,
-        name: str,
-        salary: int,
-        language: str,
-        status: Status = Status.offline,
-        projects: list[str] | None = None,
-        bugs_fixed: int = 0,
-    ):
-        # викликаємо init з Employee
-        super().__init__(name, salary, status)
-
-        # додаткові атрибути
-        self._language = language
-        self._bugs_fixed = bugs_fixed
-
-        # перевірка projects
-        if projects is None:
-            self._projects = []
-        else:
-            self._projects = projects
-
-    # * `info()` – додатково виводить інформацію
-    def info(self):
-        super().info()
-        print(f"Language: {self._language}, #fixed bugs: {self._bugs_fixed}")
-        print(f"Projects: {self._projects}")
-
-    # * `add_project(project)` – додає проєкт
-    def add_project(self, project: str):
-        self._projects.append(project)
-
-    # * `fix_bug(count)` – збільшує кількість виправлених помилок
-    def fix_bug(self, count: int):
-        self._bugs_fixed += count
-
-    # * `change_language(new_language)` – змінює мову програмування
-    def change_language(self, new_language: str):
-        self._language = new_language
-
-
-pr1 = Programer(
-    name="Jhon",
-    salary=1000,
-    language="Python",
-)
-
-pr2 = Programer(
-    name="Mary",
-    salary=1000,
-    language="Python",
-)
-
-pr3 = Programer(
-    name="Mike",
-    salary=1000,
-    language="Python",
-)
-pr1.change_language("Java")
-pr2.fix_bug(3)
-pr3.add_project("Text detection")
-pr3.start_work()
-
-# pr1.info()
-# pr2.info()
-# pr3.info()
-#
-# Методи:
-#
-# * `info()` – додатково виводить інформацію
-# * `add_project(project)` – додає проєкт
-# * `fix_bug(count)` – збільшує кількість виправлених помилок
-# * `change_language(new_language)` – змінює мову програмування
-#
-# ---
-#
-# ## Завдання 3
-#
-# Створіть дочірній клас **Designer**
-#
-# Додаткові атрибути:
-#
-# * `tool` – програма для дизайну
-# * `works_done` – кількість виконаних робіт
-# * `style` – стиль дизайну
-
-
-class Designer(Employee):
-    def __init__(
-        self,
-        name: str,
-        salary: int,
-        tool: str,
-        style: str,
-        status: Status = Status.offline,
-        works_done: int = 0,
-    ):
-        super().__init__(name, salary, status)
-
-        self._tool = tool
-        self._style = style
-        self._works_done = works_done
-
-    #
-    # Методи:
-    #
-    # * `info()` – додатково виводить інформацію
-    def info(self):
-        super().info()
-        print(f"Tool: {self._tool}, style: {self._style}")
-        print(f"#Works done: {self._works_done}")
-
-    # * `create_design()` – збільшує кількість робіт
-    def create_design(self):
-        self._works_done += 1
-
-    # * `change_style(new_style)` – змінює стиль
-    def change_style(self, new_style: str):
-        self._style = new_style
-
-    # * `change_tool(new_tool)` – змінює програму для роботи
-    def change_tool(self, new_tool: str):
-        self._tool = new_tool
-
-
-# class Employee(ABC):
-#     pass
+# # збережання даних у файл з json
+# with open("data.json", "w", encoding="utf-8") as file:
+#     # json.dump(data, file)
+#     # стандартне кодування -- ascii
+#     # ensure_ascii=False -- дозволити інші кодування також
+#     # indent -- відступи
+#     json.dump(data, file, indent=2, ensure_ascii=False)
 #
 #
-# class Designer(Employee):
-#     pass
+# # читання даних
+# with open("data.json", "r", encoding="utf-8") as file:
+#     # json.load(file)
+#     new_data = json.load(file)
 #
 #
-# class Programer(Employee):
-#     pass
+# print(type(new_data))
+# print(new_data)
+# print(new_data["name"])
+
+# # json переводить дані в байти(str але не зовсім)
+#
+# # переведення даних в байти
+# raw_bytes = json.dumps(data, ensure_ascii=False)
+# print(type(raw_bytes))
+# print(raw_bytes)
+# print(repr(raw_bytes)) # так як це виглядало б в коді
 #
 #
-# designer1 = Designer()
-# progra = Programer()
+# # перевести байти в нормальних тип даних
+# new_data = json.loads(raw_bytes)
+# print(type(new_data))
+# print(new_data)
+# print(new_data["name"])
+
+
+# Користувач вводить назву та ціну продукту. Добавте їх у кошик
+# Також збережіть дані у файл
+
+FILENAME = "cart.json"
+
+
+def add_new_item(cart: dict):
+    item = input("Enter item name: ")
+    price = float(input("Enter price: "))
+
+    cart[item] = price
+
+
+def save_cart(cart: dict):
+    with open(FILENAME, "w", encoding="utf-8") as file:
+        json.dump(cart, file, indent=2)
+
+
+def load_cart():
+    with open(FILENAME, encoding="utf-8") as file:
+        cart = json.load(file)
+
+    return cart
+
+
+if __name__ == "__main__":
+    cart = load_cart()
+
+    while True:
+        commad = int(input("enter command: "))
+
+        if commad == 1:
+            add_new_item(cart)
+
+        elif commad == 2:
+            save_cart(cart)
