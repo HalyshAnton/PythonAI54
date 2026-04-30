@@ -1,78 +1,151 @@
-# пакування даних
-
-# import json
+# паралельне програмування(потокове)
 #
 #
-# class Person:
-#     pass
+# Кухар
+# Задачі де потрбна увага кухаря
+# - нарізати овочі
+# - смажити стейк
+# - перевірка смаку(добавляння спецій)
 #
-# data = {
-#     "name": "John",
-#     "age": 45,
-# }
+# Задачі які виконуються без кухаря
+# - закипить вода
+# - щось випікається
+# - маринується стейк
+
+# в програмуванні є схожі задачі
+# CPU(процесор) - задачі
+# - рахується сума чисел
+# - відтворюєте відео
+# - відобразити вміст сайту
+
+# I\O(input output) задачі -- це коли процесор чекає на відповідь сервера
+# - очікування коли прогрузиться сайт
+# - очікування коли чат гпт дасть відповість
+# - очуківання коли завантажиться відео на ютуб
+
+
+# name = input()
+# result = func(name)
+# print(result)
+
+# асинхронність
+# один кухар на одній кухні працює розумно(
+# поки закіпає вода і маринується стейк він ріже овочі)
+
+# в програмуванні -- асинхронні функції
+
+# багато процесорність
+# багато кухарів на багатьох кухня
 #
+# "кухні" -- це ядра процесора
+
+# multiprocessing
+
+# багато потоковість
+# багато кухарів на одній кухні, але вони виконують задачі почерзі
+# поки один смажить за плитою інші чекають
 #
-# with open("user_info.json", "w", encoding="utf-8") as file:
-#     json.dump(data, file, indent=2)
-#
-#
-# with open("user_info.json", "r", encoding="utf-8") as file:
-#     new_data = json.load(file)
-#
-# print(new_data)
-# print(new_data["age"])
+# потоки -- thread
+
+# import multiprocessing
+# import thread
+# import asyncio
 
 
-# У json є обмеження через те що він має бути сумісним з
-# іншими мовами
-#
-# Чисто для Python є pickle
+# потоки
+import threading
+import time
 
-import pickle
-
-data = {"name": "John", "age": 45, "items": {12, 3, 4, 5}}
-
-# # кодування інформації
-# encoded = json.dumps(data)
-# print(encoded)
-# print(type(encoded))
-#
-# encoded = pickle.dumps(data)
-# print(encoded)
-# print(type(encoded))
-
-# для pickle файл треба відкривати для запису байтів
-
-with open("user_info.pkl", "wb") as f_out:
-    pickle.dump(data, f_out)
-
-
-with open("user_info.pkl", "rb") as f_in:
-    new_data = pickle.load(f_in)
-
-
-print(new_data)
-print(type(new_data))
-print(new_data["age"])
-
-
-class Person:
-    def __init__(self, name, age):
-        self._name = name
-        self._age = age
-
-    def info(self):
-        print(f"Name: {self._name}, age: {self._age}")
-
-
-person = Person("Mary", 23)
-
-# with open("person.pkl", "wb") as file:
-#     pickle.dump(person, file)
+# def long_func():
+#     total = 0
+#     for i in range(50_000_000):
+#         total += i
+#     print("finish")
 #
 #
-# with open("person.pkl", "rb") as file:
-#     new_person = pickle.load(file)
+# start = time.time()
+# long_func()
+# end = time.time()
+# print(f"Час виконання: {end - start}")
+#
+# # # код звичайний
+# # start = time.time()
+# # long_func()
+# # long_func()
+# # end = time.time()
+# # print(f"Час виконання: {end - start}")
+#
+# # потоки
+# thread1 = threading.Thread(
+#     target=long_func,  # функція яка виконується під час потоку
+# )
+#
+# thread2 = threading.Thread(
+#     target=long_func,  # функція яка виконується під час потоку
+# )
+#
+# start = time.time()
+#
+# # запускаємо потоки
+# thread1.start()  # запускається потік
+# thread2.start()  # не чекає завершення thread1
+#
+# print("hi")  # виконується паралельно з потоками
+#
+# # чекаємо поки потоки закінчаться
+# thread1.join()
+# thread2.join()
+# # ось тут гарантується що потоки закінчили роботу
+#
+# end = time.time()
+# print(f"Час виконання: {end - start}")
+
+
+# # параметри для функцій
+#
+# def print_text(text):
+#     for _ in range(20):
+#         print(text+"\n", end="")
 #
 #
-# new_person.info()
+# thread1 = threading.Thread(
+#     target=print_text,   # функція
+#     #args=("hello1",),   # параметри функції
+#     kwargs={"text": "hello1"}  # теж  параметри тільки словником
+# )
+#
+# thread2 = threading.Thread(
+#     target=print_text,
+#     #args=("hello1",),   # параметри функції
+#     kwargs={"text": "hello2"}  # теж  параметри тільки словником
+# )
+#
+#
+# thread1.start()
+# thread2.start()
+#
+#
+# thread1.join()
+# thread2.join()
+#
+# print("END")
+
+
+# результат функції
+
+
+def add(num1: int, num2: int, res: dict[str, int]):
+    time.sleep(2)
+    res["res"] = num1 + num2
+
+
+res: dict[str, int] = {}
+thread = threading.Thread(
+    target=add,
+    args=(2, 3, res),
+)
+
+thread.start()
+print(res)  # результату ще нема
+thread.join()
+print(res)
