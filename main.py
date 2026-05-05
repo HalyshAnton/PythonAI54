@@ -1,151 +1,78 @@
-# паралельне програмування(потокове)
+# # дз
 #
+# input_thread
 #
-# Кухар
-# Задачі де потрбна увага кухаря
-# - нарізати овочі
-# - смажити стейк
-# - перевірка смаку(добавляння спецій)
+# sum_thread
+# avg_thread
 #
-# Задачі які виконуються без кухаря
-# - закипить вода
-# - щось випікається
-# - маринується стейк
+# input_thread.start()
+# input_thread.join()
+#
+# sum_thread.start()
+# avg_thread.start()
+#
+# sum_thread.join()
+# avg_thread.join()
 
-# в програмуванні є схожі задачі
-# CPU(процесор) - задачі
-# - рахується сума чисел
-# - відтворюєте відео
-# - відобразити вміст сайту
+# серверне програмування
+from fastapi import FastAPI
+from pydantic import BaseModel
 
-# I\O(input output) задачі -- це коли процесор чекає на відповідь сервера
-# - очікування коли прогрузиться сайт
-# - очікування коли чат гпт дасть відповість
-# - очуківання коли завантажиться відео на ютуб
+# змінна для застосунку
+app = FastAPI()
 
 
-# name = input()
-# result = func(name)
-# print(result)
+# запуск
+# uvicorn [файл]:[змінна для застосунку] --host [ip адреса] --port [порт]
 
-# асинхронність
-# один кухар на одній кухні працює розумно(
-# поки закіпає вода і маринується стейк він ріже овочі)
+# ендроінт(функція на сервері)
 
-# в програмуванні -- асинхронні функції
-
-# багато процесорність
-# багато кухарів на багатьох кухня
-#
-# "кухні" -- це ядра процесора
-
-# multiprocessing
-
-# багато потоковість
-# багато кухарів на одній кухні, але вони виконують задачі почерзі
-# поки один смажить за плитою інші чекають
-#
-# потоки -- thread
-
-# import multiprocessing
-# import thread
-# import asyncio
+# @[змінна для застосунку].[http метод]([шлях])
+# def func...
 
 
-# потоки
-import threading
-import time
-
-# def long_func():
-#     total = 0
-#     for i in range(50_000_000):
-#         total += i
-#     print("finish")
-#
-#
-# start = time.time()
-# long_func()
-# end = time.time()
-# print(f"Час виконання: {end - start}")
-#
-# # # код звичайний
-# # start = time.time()
-# # long_func()
-# # long_func()
-# # end = time.time()
-# # print(f"Час виконання: {end - start}")
-#
-# # потоки
-# thread1 = threading.Thread(
-#     target=long_func,  # функція яка виконується під час потоку
-# )
-#
-# thread2 = threading.Thread(
-#     target=long_func,  # функція яка виконується під час потоку
-# )
-#
-# start = time.time()
-#
-# # запускаємо потоки
-# thread1.start()  # запускається потік
-# thread2.start()  # не чекає завершення thread1
-#
-# print("hi")  # виконується паралельно з потоками
-#
-# # чекаємо поки потоки закінчаться
-# thread1.join()
-# thread2.join()
-# # ось тут гарантується що потоки закінчили роботу
-#
-# end = time.time()
-# print(f"Час виконання: {end - start}")
+@app.get("/hello_endpoint")
+def hello():
+    return {"message": "hello world"}
 
 
-# # параметри для функцій
-#
-# def print_text(text):
-#     for _ in range(20):
-#         print(text+"\n", end="")
-#
-#
-# thread1 = threading.Thread(
-#     target=print_text,   # функція
-#     #args=("hello1",),   # параметри функції
-#     kwargs={"text": "hello1"}  # теж  параметри тільки словником
-# )
-#
-# thread2 = threading.Thread(
-#     target=print_text,
-#     #args=("hello1",),   # параметри функції
-#     kwargs={"text": "hello2"}  # теж  параметри тільки словником
-# )
-#
-#
-# thread1.start()
-# thread2.start()
-#
-#
-# thread1.join()
-# thread2.join()
-#
-# print("END")
+@app.post("/register/{user_name}")  # параметр як частина шляху
+def register_user(user_name: str):
+    return {
+        "user": user_name,
+        "is_registered": True,
+    }
 
 
-# результат функції
+# передача параметрів
+
+# створення схеми для даних
 
 
-def add(num1: int, num2: int, res: dict[str, int]):
-    time.sleep(2)
-    res["res"] = num1 + num2
+# дані користувача
+class User(BaseModel):
+    name: str
+    age: int
+    email: str
 
 
-res: dict[str, int] = {}
-thread = threading.Thread(
-    target=add,
-    args=(2, 3, res),
-)
+class UserResponse(BaseModel):
+    user_name: str
+    user_age: int
+    user_email: str
+    is_registered: bool
 
-thread.start()
-print(res)  # результату ще нема
-thread.join()
-print(res)
+
+@app.post("/register")
+def register(user: User) -> UserResponse:
+    """
+    Реєструє користувача
+    :param user:
+    :return:
+    """
+    return UserResponse(
+        user_name=user.name,
+        user_age=user.age,
+        user_email=user.email,
+        is_registered=True,
+    )
