@@ -1,19 +1,3 @@
-# # дз
-#
-# input_thread
-#
-# sum_thread
-# avg_thread
-#
-# input_thread.start()
-# input_thread.join()
-#
-# sum_thread.start()
-# avg_thread.start()
-#
-# sum_thread.join()
-# avg_thread.join()
-
 # серверне програмування
 from fastapi import FastAPI
 from pydantic import BaseModel
