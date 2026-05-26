@@ -91,3 +91,35 @@
 -- SELECT CITY, COUNT(*) AS "КІЛЬКІТЬ ЛЮДЕЙ"
 -- FROM PERSON
 -- GROUP BY CITY
+
+
+
+-- тимчасова таблиця
+
+-- мінімальний вік людини
+-- SELECT MIN(AGE)
+-- FROM PERSON
+
+
+-- ЛЮДИНА З МІНІМАЛЬНИМ ВІКОМ
+-- SELECT *
+-- FROM PERSON
+-- WHERE AGE = (
+-- 	SELECT MIN(AGE)
+-- 	FROM PERSON
+-- )
+
+-- ВИВЕЧТИ МІСТО ДЕ ЖИВЕ НАЙБІЛЬША КІЛЬКІСТЬ ЛЮДЕЙ
+-- SELECT CITY, COUNT(*) AS POPULATION
+-- FROM PERSON
+-- GROUP BY CITY
+
+-- WITH [НАЗВА ТИМЧАСОВОЇ ТАБЛМЦІ] AS (SELECT ...)
+WITH CITY_INFO AS (
+	SELECT CITY, COUNT(*) AS POPULATION
+	FROM PERSON
+	GROUP BY CITY
+)
+SELECT *
+FROM CITY_INFO
+WHERE POPULATION = 8
