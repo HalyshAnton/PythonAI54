@@ -43,21 +43,42 @@ session = Session()  # конкретна сесія
 # print(list(tables.keys()))
 
 
-# запуск sql запиту(дані про конткретного студента)
-student_name = input("Введіит ім'я студента")
+# # запуск sql запиту(дані про конткретного студента)
+# student_name = input("Введіит ім'я студента")
+#
+# query = f"""
+#     SELECT *
+#     FROM STUDENTS
+#     where name = '{student_name}'
+# """
+#
+# #  підправити текст
+# query = text(query)
+#
+# # запуск
+# result = session.execute(query)
+#
+# # виведення результатів(рядків)
+# for row in result:
+#     print(row)
+
+
+# отримати дані студента за паролем
+
+password = input("password: ")
+
+# sql injection
+# password = "22263782' or '2' = '2"
 
 query = f"""
     SELECT *
     FROM STUDENTS
-    where name = '{student_name}'
+    WHERE PASSWORD = '{password}'
 """
 
-#  підправити текст
 query = text(query)
-
-# запуск
 result = session.execute(query)
 
-# виведення результатів(рядків)
+
 for row in result:
     print(row)
