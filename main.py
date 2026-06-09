@@ -82,3 +82,10 @@ result = session.execute(query)
 
 for row in result:
     print(row)
+
+
+data = {"name": "mary", "age": 37}
+
+# key -- data
+# name, age -- field
+# mary, 37 -- value
