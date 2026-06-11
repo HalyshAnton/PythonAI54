@@ -169,13 +169,123 @@ class SocialApp:
 app = SocialApp()
 
 
-# app.signup("John", "qwerty21")
+# # app.signup("John", "qwerty21")
+#
+# app.login("Mary", "qwerty21")
+# #app.add_info(name="Anton Halysh", age=24, city="Kyiv")
+# # app.get_info()
+# # app.add_friend("Mary")
+# # app.get_friends()
+# app.add_story("python", "це мова програмування")
+# app.add_story("exam", "екзамен у вівторок")
+# app.add_story("ai", "це штучний інтелект")
 
-app.login("Mary", "qwerty21")
-#app.add_info(name="Anton Halysh", age=24, city="Kyiv")
-# app.get_info()
-# app.add_friend("Mary")
-# app.get_friends()
-app.add_story("python", "це мова програмування")
-app.add_story("exam", "екзамен у вівторок")
-app.add_story("ai", "це штучний інтелект")
+
+
+# # змінювальні типи даних(list, set, dict)
+# fruits_sonia = ["apple", "orange", "banana"]
+#
+# # це тоя самий список але під іншим ім'ям
+# fruits_student = fruits_sonia
+#
+# fruits_student.append("kiwi")
+#
+# print(fruits_student)
+# print(fruits_sonia)
+#
+#
+# def func(sonia_list)
+#     sonia_list.append("kiwi")
+#
+#
+# func(fruits_student)
+
+
+# # два варіанта циклу for
+#
+# fruits = ["apple", "orange", "banana"]
+#
+# # загальне правило для обох циклів
+# # не змінювати кількість елементів в списку
+# # якщо треба то кразе створювати інший список
+#
+# # по елементах
+# # не можете змінювати елементи списку
+# for fruit in fruits:
+#     fruit = fruit.upper()
+#     print(fruit)
+# print(fruits)
+#
+# # по індексах
+# # можна змювати елементи списку
+# for i in range(len(fruits)):
+#     fruits[i] = fruits[i].upper()
+#     print(i, fruits[i])
+#
+# print(fruits)
+#
+# fruits = ["apple", "orange", "banana"]
+# # видалити фрукти які починаютья на а
+#
+# new_fruits = []
+# for fruit in fruits:
+#     if not fruit.startswith("a"):
+#         new_fruits.append(fruit)
+#
+# fruits = new_fruits
+# print(fruits)
+
+
+# try except
+# код де може бути помилка
+
+try:
+    # код де може бути помилка
+    num = int(input("Ввеліть число: "))
+
+    result = 1 / num
+    print(result)
+
+except ValueError:
+    # код який виконувати у випадку якщо відбулась помилка ValueError
+    print("ви ввели не число")
+
+except ZeroDivisionError:
+    print("не можна ділити на 0")
+
+except Exception as err:  # будь яка помилка
+    print("error", err)
+
+
+
+#  Клас Library — бібліотека
+# Клас Book: атрибути — назва (str), автор (str).
+# Клас Library: атрибут — список книг (list, за замовчуванням порожній).
+# Метод add_book(book): додає об'єкт Book до списку.
+# Метод remove_book(title): видаляє книгу за назвою. Виводьте повідомлення, якщо
+# книгу не знайдено.
+# Метод find_book(title): шукає і повертає книгу за назвою (часткове співпадіння).
+# Метод show_all(): виводить список усіх кн
+
+from typing import List
+
+class Book:
+    def __init__(self, name: str, author: str):
+        self.name = name
+        self.author = author
+
+
+class Library:
+    def __init__(self):
+        self.books: List[Book] = []
+
+    def add_book(self, book: Book):
+        self.books.append((book))
+
+
+library = Library()
+
+book1 = Book("Robinson Kruso", "Defo")
+book2 = Book("Kobzar", "Taras")
+
+library.add_book(book2)
